@@ -87,10 +87,6 @@ jobs:
       - name: Install Node deps
         run: pnpm install
 
-      # Install PHP deps
-      - name: Install PHP deps
-        run: cd packages/php && composer install --prefer-dist --no-progress --no-interaction
-
       - name: Lingo.dev
         uses: ./
         with:

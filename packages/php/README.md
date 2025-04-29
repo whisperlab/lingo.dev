@@ -36,7 +36,7 @@ composer init --name=my-vendor/my-app --description="My Awesome PHP App" --autho
 Navigate to your project directory and run the following Composer command:
 
 ```bash
-composer require lingodotdev/php-sdk
+composer require lingodotdev/sdk
 ```
 
 This will download the SDK and its dependencies into your project's `vendor` directory and update your `composer.json` and `composer.lock` files.
