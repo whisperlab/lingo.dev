@@ -3,4 +3,3 @@ packages:
   - "./integrations/*"
   - "./legacy/*"
   - "./action"
-  - "./packages/php" # Add PHP SDK package
