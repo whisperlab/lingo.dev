@@ -1,0 +1,21 @@
+{
+  "name": "@lingodotdev/php-sdk",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Lingo.dev PHP SDK",
+  "scripts": {
+    "install:php": "composer install --prefer-dist --no-progress",
+    "test": "composer test",
+    "build": "composer install --prefer-dist --no-progress --no-dev" 
+  },
+  "keywords": [
+    "lingo.dev",
+    "php",
+    "sdk",
+    "localization",
+    "i18n"
+  ],
+  "author": "Lingo.dev Team",
+  "license": "Apache-2.0"
+}
+
