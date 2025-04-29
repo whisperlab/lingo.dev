@@ -48,9 +48,7 @@ Ensure your project is set up to use Composer's autoloader. Typically, you inclu
 ```php
 <?php
 
-require_once __DIR__ . 
-/vendor/autoload.php
-;
+require_once __DIR__ . '/vendor/autoload.php';
 
 // Your code here...
 ```
@@ -66,9 +64,7 @@ Start your PHP file by including the Composer autoloader and importing the `Ling
 ```php
 <?php
 
-require_once __DIR__ . 
-/vendor/autoload.php
-;
+require_once __DIR__ . '/vendor/autoload.php';
 
 use LingoDotDev\PhpSdk\LingoDotDevEngine;
 ```
@@ -78,39 +74,22 @@ use LingoDotDev\PhpSdk\LingoDotDevEngine;
 You need your Lingo.dev API key to create an instance of the engine. You can pass configuration options as an array to the constructor.
 
 ```php
-$apiKey = 
-getenv(
-LINGODOTDEV_API_KEY
-) ?: 
-YOUR_API_KEY
-; // Replace with your actual API key or load from env
+$apiKey = getenv('LINGODOTDEV_API_KEY') ?: 'YOUR_API_KEY'; // Replace with your actual API key or load from env
 
 if (!$apiKey) {
     die("Error: Lingo.dev API key is not set. Set the LINGODOTDEV_API_KEY environment variable or replace YOUR_API_KEY in the code.");
 }
 
 $config = [
-    
-apiKey
- => $apiKey,
+    'apiKey' => $apiKey,
     // Optional: Specify a different API URL if needed
-    // 
-apiUrl
- => 
-https://api.lingo.dev
-,
+    // 'apiUrl' => 'https://api.lingo.dev',
     // Optional: Set a default timeout for API requests (in seconds)
-    // 
-timeout
- => 30,
+    // 'timeout' => 30,
     // Optional: Configure retry attempts
-    // 
-retries
- => 3,
+    // 'retries' => 3,
     // Optional: Set a callback for progress updates during batch operations
-    // 
-onProgress
- => function($progress) {
+    // 'onProgress' => function($progress) {
     //     echo "Localization progress: " . ($progress * 100) . "%\n";
     // }
 ];
@@ -133,15 +112,8 @@ Now you can use the `$lingoEngine` instance to call the various API methods.
     try {
         $textToRecognize = "Bonjour le monde!";
         $localeInfo = $lingoEngine->recognizeLocale($textToRecognize);
-        echo "Detected Locale: " . $localeInfo[
-locale
-] . "\n"; // Output: Detected Locale: fr
-        // $localeInfo also contains 
-language
-, 
-region
-, 
-script
+        echo "Detected Locale: " . $localeInfo['locale'] . "\n"; // Output: Detected Locale: fr
+        // $localeInfo also contains 'language', 'region', 'script'
 
     } catch (\Exception $e) {
         echo "Error recognizing locale: " . $e->getMessage() . "\n";
@@ -172,25 +144,13 @@ script
     ```php
     try {
         $objectToLocalize = [
-            
-title
- => "Welcome",
-            
-body
- => "This is the content.",
-            
-author
- => [
-                
-name
- => "John Doe",
-                
-bio
- => "An example author."
+            'title' => "Welcome",
+            'body' => "This is the content.",
+            'author' => [
+                'name' => "John Doe",
+                'bio' => "An example author."
             ],
-            
-tags
- => ["greeting", "example"]
+            'tags' => ["greeting", "example"]
         ];
         $targetLocale = "de"; // Target locale (e.g., German)
 
@@ -235,9 +195,7 @@ tags
 
         // Example progress callback (optional)
         $lingoEngine->setConfig([
-            
-onProgress
- => function($progress) {
+            'onProgress' => function($progress) {
                 echo "Batch progress: " . round($progress * 100) . "%\n";
             }
         ]);
@@ -268,27 +226,9 @@ onProgress
     ```php
     try {
         $chatMessages = [
-            [
-role
- => 
-system
-, 
-content
- => "You are a helpful assistant."],
-            [
-role
- => 
-user
-, 
-content
- => "What is the capital of France?"],
-            [
-role
- => 
-assistant
-, 
-content
- => "The capital of France is Paris."]
+            ['role' => 'system', 'content' => "You are a helpful assistant."],
+            ['role' => 'user', 'content' => "What is the capital of France?"],
+            ['role' => 'assistant', 'content' => "The capital of France is Paris."]
         ];
         $targetLocale = "ja"; // Target locale (e.g., Japanese)
 
@@ -340,9 +280,7 @@ When creating the `LingoDotDevEngine` instance, you can pass an associative arra
 You can also update the configuration after instantiation using the `setConfig` method:
 
 ```php
-$lingoEngine->setConfig([ 
-timeout
- => 60 ]);
+$lingoEngine->setConfig([ 'timeout' => 60 ]);
 ```
 
 ## Contributing
@@ -352,4 +290,3 @@ Contributions are welcome! Please refer to the main repository's contribution gu
 ## License
 
 This SDK is licensed under the Apache-2.0 License. See the LICENSE file for details.
-

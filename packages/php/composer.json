@@ -1,6 +1,5 @@
 {
-    "name": "lingodotdev/sdk",
-    "description": "Lingo.dev PHP SDK",
+   "name": "lingodotdev/sdk",  "description": "Lingo.dev PHP SDK",
     "type": "library",
     "license": "Apache-2.0",
     "authors": [
