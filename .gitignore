@@ -41,5 +41,5 @@ i18n.cache
 
 
 # PHP Dependencies
-/vendor/
+vendor/
 
