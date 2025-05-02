@@ -8,7 +8,7 @@ export default async function trackEvent(distinctId: string, event: string, prop
 
   try {
     const posthog = new PostHog("phc_eR0iSoQufBxNY36k0f0T15UvHJdTfHlh8rJcxsfhfXk", {
-      host: "https://eu.i.posthog.com",
+      host: "https://eu.posthog.com",
       flushAt: 1,
       flushInterval: 0,
     });
