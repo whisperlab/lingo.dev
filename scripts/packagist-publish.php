@@ -46,7 +46,8 @@ if ($packageExists) {
     $apiUrl = "https://packagist.org/api/create-package?username=$username&apiToken=$apiToken";
 }
 
-$repoUrl = "https://github.com/lingodotdev/lingo.dev";
+$repoUrl = getenv('REPO_URL') ?: "https://github.com/lingodotdev/lingo.dev";
+echo "Using repository URL: $repoUrl\n";
 
 $data = [
     'repository' => [
