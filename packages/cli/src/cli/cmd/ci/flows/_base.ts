@@ -5,6 +5,7 @@ export interface IIntegrationFlow {
   preRun?(): Promise<boolean>;
   run(): Promise<boolean>;
   postRun?(): Promise<void>;
+  returnToOriginalBranch?(): Promise<void>;
 }
 
 export abstract class IntegrationFlow implements IIntegrationFlow {
