@@ -1,0 +1,6 @@
+# Exclude everything by default
+*                  export-ignore
+
+# Include only composer.json and PHP SDK source files
+/composer.json     -export-ignore
+/php/sdk/src/**    -export-ignore
