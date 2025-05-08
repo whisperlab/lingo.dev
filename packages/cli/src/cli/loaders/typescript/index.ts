@@ -43,12 +43,26 @@ export default function createTypescriptLoader(): ILoader<
         return "";
       }
 
-      const input = originalInput as string;
+      const input = pullInput as string;
+      
+      if (!input) {
+        console.error("No input provided for locale:", locale);
+        return "";
+      }
 
       try {
         const ast = parseTypeScript(input);
+        
+        const currentStrings = extractStringsFromDefaultExport(ast);
+        const flattenedCurrentStrings = flattenExtractedStrings(currentStrings);
+        
         const nestedData = unflattenStringData(data);
-        const modified = updateStringsInDefaultExport(ast, nestedData);
+        
+        const modified = updateStringsInDefaultExport(
+          ast, 
+          nestedData, 
+          locale === defaultLocale
+        );
 
         if (!modified) {
           return input;
@@ -210,6 +224,7 @@ function extractStringsFromExportedIdentifier(
 function updateStringsInDefaultExport(
   ast: t.File,
   data: Record<string, any>,
+  isSourceLocale: boolean = true,
 ): boolean {
   let modified = false;
 
@@ -217,11 +232,11 @@ function updateStringsInDefaultExport(
     ExportDefaultDeclaration(path: NodePath<t.ExportDefaultDeclaration>) {
       if (t.isObjectExpression(path.node.declaration)) {
         modified =
-          updateStringsInObjectExpression(path.node.declaration, data, "") ||
+          updateStringsInObjectExpression(path.node.declaration, data, "", isSourceLocale) ||
           modified;
       } else if (t.isIdentifier(path.node.declaration)) {
         modified =
-          updateStringsInExportedIdentifier(path, data, "") || modified;
+          updateStringsInExportedIdentifier(path, data, "", isSourceLocale) || modified;
       }
     },
   });
@@ -236,6 +251,7 @@ function updateStringsInObjectExpression(
   objectExpression: t.ObjectExpression,
   data: Record<string, any>,
   path: string,
+  isSourceLocale: boolean = true,
 ): boolean {
   let modified = false;
 
@@ -245,12 +261,14 @@ function updateStringsInObjectExpression(
       const currentPath = path ? `${path}/${key}` : key;
 
       if (t.isStringLiteral(prop.value)) {
-        if (data[currentPath] !== undefined) {
-          prop.value.value = data[currentPath];
-          modified = true;
-        } else if (path === "" && data[key] !== undefined) {
-          prop.value.value = data[key];
-          modified = true;
+        if (isSourceLocale) {
+          if (data[currentPath] !== undefined) {
+            prop.value.value = data[currentPath];
+            modified = true;
+          } else if (path === "" && data[key] !== undefined) {
+            prop.value.value = data[key];
+            modified = true;
+          }
         }
       } else if (t.isObjectExpression(prop.value)) {
         if (data[key] && typeof data[key] === "object") {
@@ -258,6 +276,7 @@ function updateStringsInObjectExpression(
             prop.value,
             data[key],
             "",
+            isSourceLocale,
           );
           modified = subModified || modified;
         } else {
@@ -265,6 +284,7 @@ function updateStringsInObjectExpression(
             prop.value,
             data,
             currentPath,
+            isSourceLocale,
           );
           modified = subModified || modified;
         }
@@ -274,6 +294,7 @@ function updateStringsInObjectExpression(
             prop.value,
             data[key],
             "",
+            isSourceLocale,
           );
           modified = subModified || modified;
         } else {
@@ -281,6 +302,7 @@ function updateStringsInObjectExpression(
             prop.value,
             data,
             currentPath,
+            isSourceLocale,
           );
           modified = subModified || modified;
         }
@@ -298,6 +320,7 @@ function updateStringsInArrayExpression(
   arrayExpression: t.ArrayExpression,
   data: Record<string, any> | any[],
   path: string,
+  isSourceLocale: boolean = true,
 ): boolean {
   let modified = false;
 
@@ -305,12 +328,14 @@ function updateStringsInArrayExpression(
     const currentPath = `${path}/${index}`;
 
     if (t.isStringLiteral(element)) {
-      if (Array.isArray(data) && data[index] !== undefined) {
-        element.value = data[index];
-        modified = true;
-      } else if (!Array.isArray(data) && data[currentPath] !== undefined) {
-        element.value = data[currentPath];
-        modified = true;
+      if (isSourceLocale) {
+        if (Array.isArray(data) && data[index] !== undefined) {
+          element.value = data[index];
+          modified = true;
+        } else if (!Array.isArray(data) && data[currentPath] !== undefined) {
+          element.value = data[currentPath];
+          modified = true;
+        }
       }
     } else if (t.isObjectExpression(element)) {
       if (
@@ -322,6 +347,7 @@ function updateStringsInArrayExpression(
           element,
           data[index],
           "",
+          isSourceLocale,
         );
         modified = subModified || modified;
       } else {
@@ -329,6 +355,7 @@ function updateStringsInArrayExpression(
           element,
           data,
           currentPath,
+          isSourceLocale,
         );
         modified = subModified || modified;
       }
@@ -338,6 +365,7 @@ function updateStringsInArrayExpression(
           element,
           data[index],
           "",
+          isSourceLocale,
         );
         modified = subModified || modified;
       } else {
@@ -345,6 +373,7 @@ function updateStringsInArrayExpression(
           element,
           data,
           currentPath,
+          isSourceLocale,
         );
         modified = subModified || modified;
       }
@@ -361,6 +390,7 @@ function updateStringsInExportedIdentifier(
   path: NodePath<t.ExportDefaultDeclaration>,
   data: Record<string, any>,
   basePath: string,
+  isSourceLocale: boolean = true,
 ): boolean {
   let modified = false;
   const exportName = (path.node.declaration as t.Identifier).name;
@@ -376,6 +406,7 @@ function updateStringsInExportedIdentifier(
             bindingPath.node.init,
             data,
             basePath,
+            isSourceLocale,
           ) || modified;
       } else if (t.isArrayExpression(bindingPath.node.init)) {
         modified =
@@ -383,6 +414,7 @@ function updateStringsInExportedIdentifier(
             bindingPath.node.init,
             data,
             basePath,
+            isSourceLocale,
           ) || modified;
       }
     }

@@ -2,11 +2,15 @@
   "version": 1.6,
   "locale": {
     "source": "en",
-    "targets": ["de"]
+    "targets": [
+      "de"
+    ]
   },
   "buckets": {
     "typescript": {
-      "include": ["demo/typescript/[locale].ts"]
+      "include": [
+        "demo/typescript/[locale].ts"
+      ]
     }
   },
   "$schema": "https://lingo.dev/schema/i18n.json"

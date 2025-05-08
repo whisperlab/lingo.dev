@@ -68,7 +68,7 @@ describe("typescript loader", () => {
       farewell: "Adiós!",
     };
 
-    const result = await loader.push("es", data);
+    const result = await loader.push("en", data);
 
     expect(result).toContain('greeting: "Hola, mundo!"');
     expect(result).toContain('farewell: "Adi');
@@ -161,7 +161,7 @@ describe("typescript loader", () => {
       "settings/theme/colors/primary": "azul",
     };
 
-    const result = await loader.push("es", data);
+    const result = await loader.push("en", data);
 
     const resultStr = JSON.stringify(result);
     expect(resultStr).toContain("Bienvenido a nuestra aplicaci");
@@ -195,7 +195,7 @@ describe("typescript loader", () => {
       "categories/1/description": "Materiales de lectura",
     };
 
-    const result = await loader.push("es", data);
+    const result = await loader.push("en", data);
 
     const resultStr = JSON.stringify(result);
     expect(resultStr).toContain("Hola");
@@ -250,5 +250,60 @@ describe("typescript loader", () => {
       "app/pages/1/sections/0/heading": "Our Story",
       "app/pages/1/sections/0/content": "We started in 2020",
     });
+  });
+
+  it("should respect locale when updating string literals", async () => {
+    const deInput = `
+      export default {
+        title: "Dies ist ein Titel",
+        description: "Dies ist eine Beschreibung",
+        nested: {
+          title: "Dies ist ein verschachtelter Titel",
+          description: "Dies ist eine verschachtelte Beschreibung"
+        }
+      };
+    `;
+
+    const enInput = `
+      export default {
+        title: "This is a title",
+        description: "This is a description",
+        nested: {
+          title: "This is a nested title",
+          description: "This is a nested description"
+        }
+      };
+    `;
+
+    const data = {
+      title: "Updated title",
+      description: "Updated description",
+      "nested/title": "Updated nested title",
+      "nested/description": "Updated nested description"
+    };
+
+    const loader = createTypescriptLoader().setDefaultLocale("en");
+    
+    await loader.pull("en", enInput);
+    
+    await loader.pull("de", deInput);
+    
+    const result = await loader.push("de", data);
+
+    expect(result).toContain('title: "Dies ist ein Titel"');
+    expect(result).toContain('description: "Dies ist eine Beschreibung"');
+    expect(result).toContain('title: "Dies ist ein verschachtelter Titel"');
+    expect(result).toContain('description: "Dies ist eine verschachtelte Beschreibung"');
+    
+    const loader2 = createTypescriptLoader().setDefaultLocale("en");
+    
+    await loader2.pull("en", enInput);
+    
+    const enResult = await loader2.push("en", data);
+    
+    expect(enResult).toContain('title: "Updated title"');
+    expect(enResult).toContain('description: "Updated description"');
+    expect(enResult).toContain('title: "Updated nested title"');
+    expect(enResult).toContain('description: "Updated nested description"');
   });
 });
