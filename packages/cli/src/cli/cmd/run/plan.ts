@@ -3,25 +3,28 @@ import { Listr, ListrDefaultRendererLogLevels } from "listr2";
 import path from "path";
 
 import { colors } from "../../constants";
-import { PlanState, LocalizationTask } from "./_types";
 import { I18nConfig, resolveOverriddenLocale } from "@lingo.dev/_spec";
 import { getBuckets } from "../../utils/buckets";
+import { commonTaskRendererOptions } from "./_const";
+import { CmdRunContext, CmdRunTask } from "./_types";
 
-export async function plan(i18nConfig: I18nConfig): Promise<PlanState> {
+export default async function plan(
+  input: CmdRunContext,
+): Promise<CmdRunContext> {
   console.log(chalk.hex(colors.orange)("[Planning]"));
 
-  return new Listr<PlanState>(
+  return new Listr<CmdRunContext>(
     [
       {
         title: "Analyzing project",
         task: async (ctx, task) => {
-          task.title = `Found ${chalk.hex(colors.yellow)(Object.keys(i18nConfig.buckets).length.toString())} bucket(s)`;
+          task.title = `Found ${chalk.hex(colors.yellow)(Object.keys(ctx.config.buckets).length.toString())} bucket(s)`;
         },
       },
       {
         title: "Scanning documents",
         task: async (ctx, task) => {
-          const buckets = getBuckets(i18nConfig);
+          const buckets = getBuckets(ctx.config);
 
           // Calculate total number of placeholdered paths for display purposes
           const totalPathPatterns = buckets.reduce(
@@ -35,23 +38,24 @@ export async function plan(i18nConfig: I18nConfig): Promise<PlanState> {
       {
         title: "Detecting locales",
         task: async (ctx, task) => {
-          const targets = i18nConfig.locale.targets;
+          const targets = ctx.config.locale.targets;
           task.title = `Found ${chalk.hex(colors.yellow)(targets.length.toString())} target locales: ${targets.map((l) => chalk.hex(colors.yellow)(l)).join(", ")}`;
         },
       },
       {
         title: "Computing translation tasks",
         task: async (ctx, task) => {
-          const buckets = getBuckets(i18nConfig);
+          const buckets = getBuckets(ctx.config);
+          ctx.tasks = [];
 
           for (const bucket of buckets) {
             for (const bucketPath of bucket.paths) {
               const sourceLocale = resolveOverriddenLocale(
-                i18nConfig.locale.source,
+                ctx.config.locale.source,
                 bucketPath.delimiter,
               );
 
-              for (const _targetLocale of i18nConfig.locale.targets) {
+              for (const _targetLocale of ctx.config.locale.targets) {
                 const targetLocale = resolveOverriddenLocale(
                   _targetLocale,
                   bucketPath.delimiter,
@@ -60,14 +64,12 @@ export async function plan(i18nConfig: I18nConfig): Promise<PlanState> {
                 // Skip if source and target are identical (shouldn't happen but guard)
                 if (sourceLocale === targetLocale) continue;
 
-                const taskItem: LocalizationTask = {
+                ctx.tasks.push({
                   sourceLocale,
                   targetLocale,
                   bucketType: bucket.type,
                   filePathPlaceholder: path.normalize(bucketPath.pathPattern),
-                };
-
-                ctx.tasks.push(taskItem);
+                });
               }
             }
           }
@@ -77,17 +79,7 @@ export async function plan(i18nConfig: I18nConfig): Promise<PlanState> {
       },
     ],
     {
-      rendererOptions: {
-        color: {
-          [ListrDefaultRendererLogLevels.COMPLETED]: (msg?: string) =>
-            msg ? chalk.hex(colors.green)(msg) : chalk.hex(colors.green)(""),
-        },
-        icon: {
-          [ListrDefaultRendererLogLevels.COMPLETED]: chalk.hex(colors.green)(
-            "✓",
-          ),
-        },
-      },
+      rendererOptions: commonTaskRendererOptions,
     },
-  ).run({ tasks: [] });
+  ).run(input);
 }

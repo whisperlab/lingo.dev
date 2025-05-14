@@ -5,9 +5,10 @@ import { vice } from "gradient-string";
 import readline from "readline";
 // Local modules
 import { colors } from "../../constants";
-import { setup } from "./setup";
-import { plan } from "./plan";
-import { process as runProcess, ProcessState } from "./process";
+import setup from "./setup";
+import plan from "./plan";
+import execute from "./execute";
+import { CmdRunContext } from "./_types";
 
 export default new Command()
   .command("run")
@@ -16,39 +17,28 @@ export default new Command()
   .option(
     "-c, --concurrency <number>",
     "Max parallel translation processes (default: unlimited)",
-    "0",
   )
   .option("--debug", "Run in debug mode with user prompts between steps", false)
   .action(async (args) => {
     try {
-      if (args.debug) {
-        await waitForUserPrompt(
-          "Debug mode enabled. Press Enter to continue to planning...",
-        );
-      }
-
       await renderClear();
       await renderSpacer();
       await renderBanner();
       await renderHero();
       await renderSpacer();
 
-      const setupState = await setup();
+      const ctx = createEmptyCmdRunCtx();
+
+      await setup(ctx, args);
       await renderSpacer();
 
-      const planState = await plan(setupState.i18nConfig);
-      await renderSpacer();
-      await exitIfNoTasks(planState.tasks);
-
-      const concurrency = parseInt(args.concurrency, 10) || 0;
-      const processState: ProcessState = await runProcess(
-        setupState,
-        planState.tasks,
-        concurrency,
-      );
+      await plan(ctx);
       await renderSpacer();
 
-      await renderSummary(processState);
+      await execute(ctx);
+      await renderSpacer();
+
+      await renderSummary(ctx);
       await renderSpacer();
     } catch (error: any) {
       process.exit(1);
@@ -58,6 +48,10 @@ export default new Command()
 // ---------------------------------------------------------------------------
 // Helper Functions
 // ---------------------------------------------------------------------------
+
+function createEmptyCmdRunCtx(): CmdRunContext {
+  return {} as any;
+}
 
 async function exitIfNoTasks(tasks: unknown[]): Promise<void> {
   if (!tasks.length) {
@@ -137,7 +131,6 @@ async function waitForUserPrompt(message: string): Promise<void> {
   });
 }
 
-export async function renderSummary(_processState: ProcessState) {
-  // Placeholder for a more detailed summary implementation
+async function renderSummary(ctx: CmdRunContext) {
   console.log(chalk.hex(colors.green)("All translation tasks completed!"));
 }
