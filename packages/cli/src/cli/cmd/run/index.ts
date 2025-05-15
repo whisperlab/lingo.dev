@@ -28,27 +28,17 @@ export default new Command()
   )
   .option(
     "--key <key>",
-    "Key to process. Process only a specific translation key, useful for debugging or updating a single entry",
+    "Key to process. Process only a specific translation key, useful for updating a single entry",
+    (val: string, prev: string[]) => (prev ? [...prev, val] : [val]),
   )
   .option(
-    "--file [files...]",
+    "--file <file>",
     "File to process. Process only a specific path, may contain asterisk * to match multiple files. Useful if you have a lot of files and want to focus on a specific one. Specify more files separated by commas or spaces.",
-  )
-  .option(
-    "--frozen",
-    `Run in read-only mode - fails if any translations need updating, useful for CI/CD pipelines to detect missing translations`,
+    (val: string, prev: string[]) => (prev ? [...prev, val] : [val]),
   )
   .option(
     "--force",
     "Ignore lockfile and process all keys, useful for full re-translation",
-  )
-  .option(
-    "--verbose",
-    "Show detailed output including intermediate processing data and API communication details",
-  )
-  .option(
-    "--interactive",
-    "Enable interactive mode for reviewing and editing translations before they are applied",
   )
   .option(
     "--api-key <api-key>",
@@ -57,10 +47,6 @@ export default new Command()
   .option(
     "--debug",
     "Pause execution at start for debugging purposes, waits for user confirmation before proceeding",
-  )
-  .option(
-    "--strict",
-    "Stop processing on first error instead of continuing with other locales/buckets",
   )
   .action(async (args) => {
     try {

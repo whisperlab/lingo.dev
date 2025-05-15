@@ -31,17 +31,17 @@ export type CmdRunTask = {
 };
 
 export const flagsSchema = z.object({
-  apiKey: z.string().optional(),
   locale: z.array(localeCodeSchema).optional(),
   bucket: z.array(bucketTypeSchema).optional(),
+  key: z.array(z.string()).optional(),
+  file: z.array(z.string()).optional(),
+  apiKey: z.string().optional(),
   force: z.boolean().optional(),
   frozen: z.boolean().optional(),
   verbose: z.boolean().optional(),
   strict: z.boolean().optional(),
-  key: z.string().optional(),
-  file: z.array(z.string()).optional(),
   interactive: z.boolean().default(false),
-  concurrency: z.number().positive().default(4),
+  concurrency: z.number().positive().default(1),
   debug: z.boolean().default(false),
 });
 export type CmdRunFlags = z.infer<typeof flagsSchema>;
