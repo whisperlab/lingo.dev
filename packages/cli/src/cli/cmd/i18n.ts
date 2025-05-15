@@ -107,8 +107,7 @@ export default new Command()
       ora.succeed("Localization configuration is valid");
 
       ora.start("Connecting to Lingo.dev Localization Engine...");
-      const isByokMode =
-        i18nConfig?.provider && i18nConfig.provider.id !== "lingo";
+      const isByokMode = !!i18nConfig?.provider;
 
       if (isByokMode) {
         authId = null;

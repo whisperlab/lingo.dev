@@ -4,11 +4,12 @@ import {
   localeCodeSchema,
 } from "@lingo.dev/_spec";
 import { z } from "zod";
+import { LocalizerFn } from "../../processor/_base";
 
 export type CmdRunContext = {
   flags: CmdRunFlags;
-  config: I18nConfig;
-  localizer: CmdRunLocalizer;
+  config: I18nConfig | null;
+  localizer: ILocalizer | null;
   tasks: CmdRunTask[];
   results: Map<CmdRunTask, { success: boolean; error?: Error }>;
 };
@@ -36,7 +37,19 @@ export const flagsSchema = z.object({
 });
 export type CmdRunFlags = z.infer<typeof flagsSchema>;
 
-export type CmdRunLocalizer = {
-  name: string;
-  fn: () => any;
+export type LocalizerData = {
+  sourceLocale: string;
+  sourceData: Record<string, any>;
+  processableData: Record<string, any>;
+  targetLocale: string;
+  targetData: Record<string, any>;
 };
+export type LocalizerProgressFn = (progress: number) => void;
+export interface ILocalizer {
+  id: "Lingo.dev" | NonNullable<I18nConfig["provider"]>["id"];
+  checkAuth: () => Promise<{ authenticated: boolean; username?: string }>;
+  localize: (
+    input: LocalizerData,
+    onProgress?: LocalizerProgressFn,
+  ) => Promise<LocalizerData["processableData"]>;
+}
