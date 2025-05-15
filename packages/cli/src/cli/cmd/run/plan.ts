@@ -18,13 +18,13 @@ export default async function plan(
       {
         title: "Analyzing project",
         task: async (ctx, task) => {
-          task.title = `Found ${chalk.hex(colors.yellow)(Object.keys(ctx.config.buckets).length.toString())} bucket(s)`;
+          task.title = `Found ${chalk.hex(colors.yellow)(Object.keys(ctx.config!.buckets || {}).length.toString())} bucket(s)`;
         },
       },
       {
         title: "Scanning documents",
         task: async (ctx, task) => {
-          const buckets = getBuckets(ctx.config);
+          const buckets = getBuckets(ctx.config!);
 
           // Calculate total number of placeholdered paths for display purposes
           const totalPathPatterns = buckets.reduce(
@@ -38,24 +38,24 @@ export default async function plan(
       {
         title: "Detecting locales",
         task: async (ctx, task) => {
-          const targets = ctx.config.locale.targets;
+          const targets = ctx.config!.locale.targets;
           task.title = `Found ${chalk.hex(colors.yellow)(targets.length.toString())} target locales: ${targets.map((l) => chalk.hex(colors.yellow)(l)).join(", ")}`;
         },
       },
       {
         title: "Computing translation tasks",
         task: async (ctx, task) => {
-          const buckets = getBuckets(ctx.config);
+          const buckets = getBuckets(ctx.config!);
           ctx.tasks = [];
 
           for (const bucket of buckets) {
             for (const bucketPath of bucket.paths) {
               const sourceLocale = resolveOverriddenLocale(
-                ctx.config.locale.source,
+                ctx.config!.locale.source,
                 bucketPath.delimiter,
               );
 
-              for (const _targetLocale of ctx.config.locale.targets) {
+              for (const _targetLocale of ctx.config!.locale.targets) {
                 const targetLocale = resolveOverriddenLocale(
                   _targetLocale,
                   bucketPath.delimiter,
@@ -68,7 +68,10 @@ export default async function plan(
                   sourceLocale,
                   targetLocale,
                   bucketType: bucket.type,
-                  filePathPlaceholder: path.normalize(bucketPath.pathPattern),
+                  bucketPathPattern: bucketPath.pathPattern,
+                  injectLocale: bucket.injectLocale || [],
+                  lockedKeys: bucket.lockedKeys || [],
+                  lockedPatterns: bucket.lockedPatterns || [],
                 });
               }
             }

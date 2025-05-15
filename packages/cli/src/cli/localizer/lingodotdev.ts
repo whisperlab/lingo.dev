@@ -1,10 +1,9 @@
-import { LocalizerData } from "../../_types";
 import dedent from "dedent";
-import { getSettings } from "../../../../utils/settings";
-import { ILocalizer } from "../../_types";
+import { ILocalizer, LocalizerData } from "./_types";
 import chalk from "chalk";
-import { colors } from "../../../may-the-fourth";
+import { colors } from "../constants";
 import { LingoDotDevEngine } from "@lingo.dev/_sdk";
+import { getSettings } from "../utils/settings";
 
 export default function createLingoDotDevLocalizer(
   explicitApiKey?: string,

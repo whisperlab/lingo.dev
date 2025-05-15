@@ -2,9 +2,10 @@ import {
   bucketTypeSchema,
   I18nConfig,
   localeCodeSchema,
+  bucketTypes,
 } from "@lingo.dev/_spec";
 import { z } from "zod";
-import { LocalizerFn } from "../../processor/_base";
+import { ILocalizer } from "../../localizer/_types";
 
 export type CmdRunContext = {
   flags: CmdRunFlags;
@@ -17,8 +18,11 @@ export type CmdRunContext = {
 export type CmdRunTask = {
   sourceLocale: string;
   targetLocale: string;
-  bucketType: string;
-  filePathPlaceholder: string;
+  bucketType: (typeof bucketTypes)[number];
+  bucketPathPattern: string;
+  injectLocale: string[];
+  lockedKeys: string[];
+  lockedPatterns: string[];
 };
 
 export const flagsSchema = z.object({
@@ -36,20 +40,3 @@ export const flagsSchema = z.object({
   debug: z.boolean().default(false),
 });
 export type CmdRunFlags = z.infer<typeof flagsSchema>;
-
-export type LocalizerData = {
-  sourceLocale: string;
-  sourceData: Record<string, any>;
-  processableData: Record<string, any>;
-  targetLocale: string;
-  targetData: Record<string, any>;
-};
-export type LocalizerProgressFn = (progress: number) => void;
-export interface ILocalizer {
-  id: "Lingo.dev" | NonNullable<I18nConfig["provider"]>["id"];
-  checkAuth: () => Promise<{ authenticated: boolean; username?: string }>;
-  localize: (
-    input: LocalizerData,
-    onProgress?: LocalizerProgressFn,
-  ) => Promise<LocalizerData["processableData"]>;
-}

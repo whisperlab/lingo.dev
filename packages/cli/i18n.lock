@@ -6,3 +6,7 @@ checksums:
     field1: f01e599cced8b7d7105329947b5096de
     field2: 591116d7c70944a65821b8ac01f30e6a
     field3/field4: 18b89a4c985977256f3f4aca14834f58
+  0d1abbacc6d742097863ba4d910983a2:
+    home/title%2Fmain: 35d8cc80baa8d63dbc854b3674acdfe0
+    home/description%2Fdev: c9e612bc3fd041dd984ab3e7f2d77e24
+    home/i-am-a-developer: d8feacce28faea3fd4228a1ebcb11473

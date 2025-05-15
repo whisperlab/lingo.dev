@@ -62,6 +62,7 @@ export default new Command()
   )
   .action(async (args) => {
     try {
+      await pauseIfDebug(args);
       await renderClear();
       await renderSpacer();
       await renderBanner();
@@ -98,24 +99,6 @@ function createEmptyCmdRunCtx(): CmdRunContext {
     tasks: [],
     localizer: null,
   };
-}
-
-async function exitIfNoTasks(tasks: unknown[]): Promise<void> {
-  if (!tasks.length) {
-    console.log(
-      chalk.yellow(
-        `Notice: Nothing to translate. Please check your i18n configuration file for proper bucket and locale settings.`,
-      ),
-    );
-    await renderSpacer();
-    console.log(
-      chalk.dim(
-        `Hint: Ensure your i18n.json has valid source and target locales, and that your bucket paths match existing files.`,
-      ),
-    );
-    await renderSpacer(); // Add spacer for better visual separation before exit
-    process.exit(1);
-  }
 }
 
 // ---------------------------------------------------------------------------
@@ -162,6 +145,12 @@ export async function renderHero() {
   console.log(
     `${chalk.hex(colors.blue)(label3.padEnd(maxLabelWidth + 1))} ${chalk.hex(colors.blue)("hi@lingo.dev")}`,
   );
+}
+
+async function pauseIfDebug(args: any) {
+  if (args.debug) {
+    await waitForUserPrompt("Press Enter to continue...");
+  }
 }
 
 async function waitForUserPrompt(message: string): Promise<void> {

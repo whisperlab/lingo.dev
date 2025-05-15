@@ -3,9 +3,9 @@ import { createOpenAI } from "@ai-sdk/openai";
 import { I18nConfig } from "@lingo.dev/_spec";
 import chalk from "chalk";
 import dedent from "dedent";
-import { colors } from "../../../may-the-fourth";
-import { ILocalizer, LocalizerData } from "../../_types";
+import { ILocalizer, LocalizerData } from "./_types";
 import { LanguageModel, Message, generateText } from "ai";
+import { colors } from "../constants";
 
 export default function createExplicitLocalizer(
   provider: NonNullable<I18nConfig["provider"]>,
