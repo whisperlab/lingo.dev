@@ -5,12 +5,7 @@ import chalk from "chalk";
 import dedent from "dedent";
 import { colors } from "../../../may-the-fourth";
 import { ILocalizer, LocalizerData } from "../../_types";
-import {
-  LanguageModel,
-  LanguageModelV1Prompt,
-  Message,
-  generateText,
-} from "ai";
+import { LanguageModel, Message, generateText } from "ai";
 
 export default function createExplicitLocalizer(
   provider: NonNullable<I18nConfig["provider"]>,

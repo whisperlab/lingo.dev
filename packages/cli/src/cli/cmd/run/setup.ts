@@ -1,10 +1,10 @@
 import chalk from "chalk";
 import { Listr } from "listr2";
-import { colors } from "../../../constants";
-import { CmdRunContext, flagsSchema } from "../_types";
-import { commonTaskRendererOptions } from "../_const";
-import { getConfig } from "../../../utils/config";
-import createLocalizer from "./localizer";
+import { colors } from "../../constants";
+import { CmdRunContext, flagsSchema } from "./_types";
+import { commonTaskRendererOptions } from "./_const";
+import { getConfig } from "../../utils/config";
+import createLocalizer from "../../localizer";
 
 export default async function setup(input: CmdRunContext, cliArgs: any) {
   console.log(chalk.hex(colors.orange)("[Setup]"));
