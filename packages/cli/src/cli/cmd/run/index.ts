@@ -1,14 +1,16 @@
 import { Command } from "interactive-commander";
-import chalk from "chalk";
-import figlet from "figlet";
-import { vice } from "gradient-string";
-import readline from "readline";
-// Local modules
-import { colors } from "../../constants";
 import setup from "./setup";
 import plan from "./plan";
 import execute from "./execute";
 import { CmdRunContext, flagsSchema } from "./_types";
+import {
+  renderClear,
+  renderSpacer,
+  renderBanner,
+  renderHero,
+  pauseIfDebug,
+  renderSummary,
+} from "./_render";
 
 export default new Command()
   .command("run")
@@ -62,16 +64,22 @@ export default new Command()
   )
   .action(async (args) => {
     try {
-      await pauseIfDebug(args);
+      const ctx: CmdRunContext = {
+        flags: flagsSchema.parse(args),
+        config: null,
+        results: new Map(),
+        tasks: [],
+        localizer: null,
+      };
+
+      await pauseIfDebug(ctx.flags.debug);
       await renderClear();
       await renderSpacer();
       await renderBanner();
       await renderHero();
       await renderSpacer();
 
-      const ctx = createEmptyCmdRunCtx();
-
-      await setup(ctx, args);
+      await setup(ctx);
       await renderSpacer();
 
       await plan(ctx);
@@ -86,87 +94,3 @@ export default new Command()
       process.exit(1);
     }
   });
-
-// ---------------------------------------------------------------------------
-// Helper Functions
-// ---------------------------------------------------------------------------
-
-function createEmptyCmdRunCtx(): CmdRunContext {
-  return {
-    config: null,
-    flags: flagsSchema.parse({}),
-    results: new Map(),
-    tasks: [],
-    localizer: null,
-  };
-}
-
-// ---------------------------------------------------------------------------
-// Render helpers (kept in this file for quick reference & CLI UX tweaks)
-// ---------------------------------------------------------------------------
-
-export async function renderClear() {
-  console.log("\x1Bc");
-}
-
-export async function renderSpacer() {
-  console.log(" ");
-}
-
-export async function renderBanner() {
-  console.log(
-    vice(
-      figlet.textSync("LINGO.DEV", {
-        font: "ANSI Shadow",
-        horizontalLayout: "default",
-        verticalLayout: "default",
-      }),
-    ),
-  );
-}
-
-export async function renderHero() {
-  console.log(
-    `⚡️ ${chalk.hex(colors.green)("Lingo.dev")} - open-source, AI-powered i18n CLI for web & mobile localization.`,
-  );
-  console.log("");
-
-  const label1 = "⭐ GitHub Repo:";
-  const label2 = "📚 Docs:";
-  const label3 = "💬 24/7 Support:";
-  const maxLabelWidth = 17; // Approximate visual width accounting for emoji
-
-  console.log(
-    `${chalk.hex(colors.blue)(label1.padEnd(maxLabelWidth))} ${chalk.hex(colors.blue)("https://lingo.dev/go/gh")}`,
-  );
-  console.log(
-    `${chalk.hex(colors.blue)(label2.padEnd(maxLabelWidth + 1))} ${chalk.hex(colors.blue)("https://lingo.dev/go/docs")}`,
-  ); // Docs emoji seems narrower
-  console.log(
-    `${chalk.hex(colors.blue)(label3.padEnd(maxLabelWidth + 1))} ${chalk.hex(colors.blue)("hi@lingo.dev")}`,
-  );
-}
-
-async function pauseIfDebug(args: any) {
-  if (args.debug) {
-    await waitForUserPrompt("Press Enter to continue...");
-  }
-}
-
-async function waitForUserPrompt(message: string): Promise<void> {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-  });
-
-  return new Promise((resolve) => {
-    rl.question(chalk.dim(`[${message}]\n`), () => {
-      rl.close();
-      resolve();
-    });
-  });
-}
-
-async function renderSummary(ctx: CmdRunContext) {
-  console.log(chalk.hex(colors.green)("All translation tasks completed!"));
-}

@@ -6,7 +6,7 @@ import { commonTaskRendererOptions } from "./_const";
 import { getConfig } from "../../utils/config";
 import createLocalizer from "../../localizer";
 
-export default async function setup(input: CmdRunContext, cliArgs: any) {
+export default async function setup(input: CmdRunContext) {
   console.log(chalk.hex(colors.orange)("[Setup]"));
 
   return new Listr<CmdRunContext>(
@@ -16,13 +16,6 @@ export default async function setup(input: CmdRunContext, cliArgs: any) {
         task: async (ctx, task) => {
           // setup gitignore, etc here
           task.title = `Environment setup completed`;
-        },
-      },
-      {
-        title: "Loading Lingo.dev CLI parameters",
-        task: async (ctx, task) => {
-          ctx.flags = flagsSchema.parse(cliArgs);
-          task.title = `Lingo.dev CLI parameters loaded`;
         },
       },
       {
