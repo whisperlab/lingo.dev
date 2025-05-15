@@ -1,8 +1,7 @@
 import chalk from "chalk";
-import { Listr, ListrTask, ListrTaskWrapper } from "listr2";
+import { Listr, ListrTask } from "listr2";
 import pLimit, { LimitFunction } from "p-limit";
 import _ from "lodash";
-import path from "path";
 
 import { colors } from "../../constants";
 import { CmdRunContext, CmdRunTask, CmdRunTaskResult } from "./_types";
@@ -11,6 +10,60 @@ import createBucketLoader from "../../loaders";
 import { createDeltaProcessor } from "../../utils/delta";
 
 const MAX_WORKER_COUNT = 10;
+
+export default async function execute(input: CmdRunContext) {
+  console.log(chalk.hex(colors.orange)("[Localization]"));
+
+  return new Listr<CmdRunContext>(
+    [
+      {
+        title: "Initializing translation engine",
+        task: async (ctx, task) => {
+          task.title = `Translation engine ${chalk.hex(colors.green)("ready")} (${ctx.localizer!.id})`;
+        },
+      },
+      {
+        title: "Processing translation tasks",
+        task: (ctx, task) => {
+          const i18nLimiter = pLimit(ctx.flags.concurrency);
+          const lockfileLimiter = pLimit(1);
+          const workersCount = Math.min(ctx.tasks.length, MAX_WORKER_COUNT);
+
+          const workerTasks: ListrTask[] = [];
+          for (let i = 0; i < workersCount; i++) {
+            const assignedTasks = ctx.tasks.filter(
+              (_, idx) => idx % workersCount === i,
+            );
+            workerTasks.push(
+              createWorkerTask({
+                ctx,
+                assignedTasks,
+                lockfileLimiter,
+                i18nLimiter,
+                onDone() {
+                  task.title = createExecutionProgressMessage(ctx);
+                },
+              }),
+            );
+          }
+
+          return task.newListr(workerTasks, {
+            concurrent: true,
+            exitOnError: false,
+            rendererOptions: {
+              ...commonTaskRendererOptions,
+              collapseSubtasks: true,
+            },
+          });
+        },
+      },
+    ],
+    {
+      exitOnError: false,
+      rendererOptions: commonTaskRendererOptions,
+    },
+  ).run(input);
+}
 
 function createWorkerStatusMessage(args: {
   assignedTask: CmdRunTask;
@@ -25,6 +78,13 @@ function createWorkerStatusMessage(args: {
   )} (${chalk.hex(colors.yellow)(args.assignedTask.sourceLocale)} -> ${chalk.hex(
     colors.yellow,
   )(args.assignedTask.targetLocale)})`;
+}
+
+function createExecutionProgressMessage(ctx: CmdRunContext) {
+  const succeededTasksCount = countTasks(ctx, (_t, result) => result.success);
+  const failedTasksCount = countTasks(ctx, (_t, result) => !result.success);
+
+  return `Processed ${chalk.green(succeededTasksCount)}/${ctx.tasks.length}, Failed ${chalk.red(failedTasksCount)}`;
 }
 
 function createLoaderForTask(assignedTask: CmdRunTask) {
@@ -60,32 +120,36 @@ function createWorkerTask(args: {
           percentage: 0,
         });
         const bucketLoader = createLoaderForTask(assignedTask);
-
         const deltaProcessor = createDeltaProcessor(
           assignedTask.bucketPathPattern,
         );
-        const sourceData = await bucketLoader.pull(assignedTask.sourceLocale);
-        const targetData = await bucketLoader.pull(assignedTask.targetLocale);
-        const checksums = await deltaProcessor.loadChecksums();
-        const delta = await deltaProcessor.calculateDelta({
-          sourceData,
-          targetData,
-          checksums,
-        });
-
-        const processableData = _.chain(sourceData)
-          .entries()
-          .filter(
-            ([key, value]) =>
-              delta.added.includes(key) ||
-              delta.updated.includes(key) ||
-              !!args.ctx.flags.force,
-          )
-          .fromPairs()
-          .value();
 
         const taskResult = await args.i18nLimiter(async () => {
           try {
+            const sourceData = await bucketLoader.pull(
+              assignedTask.sourceLocale,
+            );
+            const targetData = await bucketLoader.pull(
+              assignedTask.targetLocale,
+            );
+            const checksums = await deltaProcessor.loadChecksums();
+            const delta = await deltaProcessor.calculateDelta({
+              sourceData,
+              targetData,
+              checksums,
+            });
+
+            const processableData = _.chain(sourceData)
+              .entries()
+              .filter(
+                ([key, value]) =>
+                  delta.added.includes(key) ||
+                  delta.updated.includes(key) ||
+                  !!args.ctx.flags.force,
+              )
+              .fromPairs()
+              .value();
+
             const processedTargetData = await args.ctx.localizer!.localize(
               {
                 sourceLocale: assignedTask.sourceLocale,
@@ -111,6 +175,12 @@ function createWorkerTask(args: {
 
             await bucketLoader.push(assignedTask.targetLocale, finalTargetData);
 
+            await args.lockfileLimiter(async () => {
+              const checksums =
+                await deltaProcessor.createChecksums(sourceData);
+              await deltaProcessor.saveChecksums(checksums);
+            });
+
             return { success: true };
           } catch (error) {
             return {
@@ -118,11 +188,6 @@ function createWorkerTask(args: {
               error: error as Error,
             };
           }
-        });
-
-        await args.lockfileLimiter(async () => {
-          const checksums = await deltaProcessor.createChecksums(sourceData);
-          await deltaProcessor.saveChecksums(checksums);
         });
 
         args.ctx.results.set(assignedTask, taskResult);
@@ -133,30 +198,6 @@ function createWorkerTask(args: {
   };
 }
 
-function createWorkerTasks(ctx: CmdRunContext, onDone: () => void) {
-  const i18nLimiter = pLimit(ctx.flags.concurrency);
-  const lockfileLimiter = pLimit(1);
-  const workersCount = Math.min(ctx.tasks.length, MAX_WORKER_COUNT);
-
-  const result: ListrTask[] = [];
-  for (let i = 0; i < workersCount; i++) {
-    const assignedTasks = ctx.tasks.filter(
-      (_, idx) => idx % workersCount === i,
-    );
-    result.push(
-      createWorkerTask({
-        ctx,
-        assignedTasks,
-        lockfileLimiter,
-        i18nLimiter,
-        onDone,
-      }),
-    );
-  }
-
-  return result;
-}
-
 function countTasks(
   ctx: CmdRunContext,
   predicate: (task: CmdRunTask, result: CmdRunTaskResult) => boolean,
@@ -164,48 +205,4 @@ function countTasks(
   return Array.from(ctx.results.entries()).filter(([task, result]) =>
     predicate(task, result),
   ).length;
-}
-
-export default async function execute(input: CmdRunContext) {
-  console.log(chalk.hex(colors.orange)("[Localization]"));
-
-  return new Listr<CmdRunContext>(
-    [
-      {
-        title: "Initializing translation engine",
-        task: async (ctx, task) => {
-          task.title = `Translation engine ${chalk.hex(colors.green)("ready")} (${ctx.localizer!.id})`;
-        },
-      },
-      {
-        title: "Processing translation tasks",
-        task: (ctx, task) => {
-          const workerTasks = createWorkerTasks(ctx, () => {
-            const succeededTasksCount = countTasks(
-              ctx,
-              (_t, result) => result.success,
-            );
-            const failedTasksCount = countTasks(
-              ctx,
-              (_t, result) => !result.success,
-            );
-            task.title = `Processed ${chalk.green(succeededTasksCount)}/${ctx.tasks.length}, Failed ${chalk.red(failedTasksCount)}`;
-          });
-
-          return task.newListr(workerTasks, {
-            concurrent: true,
-            exitOnError: false,
-            rendererOptions: {
-              ...commonTaskRendererOptions,
-              collapseSubtasks: true,
-            },
-          });
-        },
-      },
-    ],
-    {
-      exitOnError: false,
-      rendererOptions: commonTaskRendererOptions,
-    },
-  ).run(input);
 }
