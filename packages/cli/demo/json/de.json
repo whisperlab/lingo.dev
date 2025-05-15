@@ -2,6 +2,232 @@
   "home": {
     "title/main": "Hallo, Lingo.dev!",
     "description/dev": "Lingo.dev ist eine KI-gestützte Lokalisierung-as-a-Service-Plattform für moderne SaaS.",
-    "i-am-a-developer": "Ich bin ein Softwareentwickler, der diese Website erstellt hat."
+    "i-am-a-developer": "Ich bin ein Softwareentwickler, der diese Website erstellt hat.",
+    "welcome": "Willkommen auf unserer Plattform",
+    "get_started": "Starten Sie noch heute",
+    "learn_more": "Erfahren Sie mehr über unsere Dienstleistungen"
+  },
+  "navigation": {
+    "home": "Startseite",
+    "features": "Funktionen",
+    "pricing": "Preise",
+    "about": "Über uns",
+    "contact": "Kontakt",
+    "login": "Anmelden",
+    "signup": "Registrieren",
+    "dashboard": "Dashboard"
+  },
+  "features": {
+    "title": "Unsere Funktionen",
+    "subtitle": "Entdecken Sie, was uns besonders macht",
+    "feature_1": {
+      "title": "KI-Übersetzung",
+      "description": "Hochmoderne KI-Übersetzung für Ihre Inhalte"
+    },
+    "feature_2": {
+      "title": "Einfache Integration",
+      "description": "Nahtlose Integration in Ihren bestehenden Workflow"
+    },
+    "feature_3": {
+      "title": "Echtzeit-Updates",
+      "description": "Sehen Sie Ihre Übersetzungen in Echtzeit aktualisiert"
+    },
+    "feature_4": {
+      "title": "Mehrere Formate",
+      "description": "Unterstützung für JSON, YAML und andere gängige Formate"
+    }
+  },
+  "pricing": {
+    "title": "Preispläne",
+    "subtitle": "Wählen Sie den Plan, der zu Ihnen passt",
+    "monthly": "Monatlich",
+    "yearly": "Jährlich",
+    "save": "Sparen Sie {percent}%",
+    "plans": {
+      "free": {
+        "name": "Free",
+        "price": "$0",
+        "description": "Perfekt für kleine Projekte",
+        "features": [
+          "Bis zu 1.000 Wörter",
+          "Basis-Übersetzung",
+          "JSON-Unterstützung",
+          "E-Mail-Support"
+        ]
+      },
+      "pro": {
+        "name": "Professional",
+        "price": "$49",
+        "description": "Für wachsende Unternehmen",
+        "features": [
+          "Bis zu 10.000 Wörter",
+          "Erweiterte Übersetzung",
+          "Alle Dateiformate",
+          "Prioritäts-Support"
+        ]
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "price": "Individuell",
+        "description": "Für große Organisationen",
+        "features": [
+          "Unbegrenzte Wörter",
+          "Benutzerdefinierte KI-Modelle",
+          "Dedizierter Account-Manager",
+          "SLA-Garantien"
+        ]
+      }
+    },
+    "cta": "Loslegen",
+    "contact_sales": "Vertrieb kontaktieren"
+  },
+  "about": {
+    "title": "Über uns",
+    "mission": "Unsere Mission ist es, Lokalisierung für jeden zugänglich zu machen",
+    "story": "Lingo.dev wurde 2023 gegründet, um die Herausforderungen moderner Lokalisierung zu lösen",
+    "team": {
+      "title": "Unser Team",
+      "members": {
+        "ceo": {
+          "name": "Jane Smith",
+          "role": "CEO & Gründerin",
+          "bio": "Ehemalige Lokalisierungsleiterin bei einem großen Technologieunternehmen"
+        },
+        "cto": {
+          "name": "John Doe",
+          "role": "CTO",
+          "bio": "KI-Forscher mit über 10 Jahren Erfahrung"
+        },
+        "head_of_product": {
+          "name": "Alice Johnson",
+          "role": "Head of Product",
+          "bio": "Produktleitung mit Expertise in SaaS-Plattformen"
+        }
+      }
+    }
+  },
+  "contact": {
+    "title": "Kontakt",
+    "subtitle": "Wir freuen uns, von Ihnen zu hören",
+    "form": {
+      "name": "Name",
+      "email": "E-Mail",
+      "subject": "Betreff",
+      "message": "Nachricht",
+      "submit": "Nachricht senden"
+    },
+    "success": "Ihre Nachricht wurde erfolgreich gesendet!",
+    "error": "Beim Senden Ihrer Nachricht ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+  },
+  "auth": {
+    "login": {
+      "title": "In Ihr Konto einloggen",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "forgot_password": "Passwort vergessen?",
+      "submit": "Anmelden",
+      "no_account": "Noch kein Konto?",
+      "signup": "Registrieren"
+    },
+    "signup": {
+      "title": "Konto erstellen",
+      "name": "Vollständiger Name",
+      "email": "E-Mail",
+      "password": "Passwort",
+      "confirm_password": "Passwort bestätigen",
+      "terms": "Ich stimme den {terms} und der {privacy} zu",
+      "terms_link": "Nutzungsbedingungen",
+      "privacy_link": "Datenschutzrichtlinie",
+      "submit": "Registrieren",
+      "has_account": "Bereits ein Konto?",
+      "login": "Anmelden"
+    },
+    "forgot_password": {
+      "title": "Passwort zurücksetzen",
+      "email": "E-Mail",
+      "submit": "Link zum Zurücksetzen senden",
+      "back_to_login": "Zurück zur Anmeldung"
+    }
+  },
+  "dashboard": {
+    "welcome": "Willkommen zurück, {name}!",
+    "projects": {
+      "title": "Ihre Projekte",
+      "create": "Neues Projekt erstellen",
+      "empty": "Sie haben noch keine Projekte",
+      "search": "Projekte suchen"
+    },
+    "stats": {
+      "words_translated": "Übersetzte Wörter",
+      "languages": "Sprachen",
+      "files": "Dateien",
+      "last_updated": "Zuletzt aktualisiert"
+    },
+    "recent_activity": {
+      "title": "Neueste Aktivitäten",
+      "empty": "Keine neuesten Aktivitäten"
+    }
+  },
+  "errors": {
+    "not_found": {
+      "title": "Seite nicht gefunden",
+      "message": "Die gesuchte Seite existiert nicht oder wurde verschoben.",
+      "back_home": "Zurück zur Startseite"
+    },
+    "server_error": {
+      "title": "Serverfehler",
+      "message": "Auf unserer Seite ist etwas schiefgelaufen. Bitte versuchen Sie es später erneut.",
+      "contact_support": "Support kontaktieren"
+    },
+    "unauthorized": {
+      "title": "Nicht autorisiert",
+      "message": "Sie müssen angemeldet sein, um auf diese Seite zuzugreifen.",
+      "login": "Anmelden"
+    },
+    "forbidden": {
+      "title": "Zugriff verweigert",
+      "message": "Sie haben keine Berechtigung, auf diese Ressource zuzugreifen.",
+      "contact_admin": "Administrator kontaktieren"
+    }
+  },
+  "common": {
+    "loading": "Wird geladen...",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "view": "Ansehen",
+    "search": "Suchen",
+    "filter": "Filter",
+    "sort": "Sortieren",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "submit": "Absenden",
+    "confirm": "Bestätigen",
+    "yes": "Ja",
+    "no": "Nein",
+    "success": "Erfolg!",
+    "error": "Fehler!",
+    "warning": "Warnung!",
+    "info": "Information",
+    "required": "Erforderlich",
+    "optional": "Optional",
+    "learn_more": "Mehr erfahren",
+    "show_more": "Mehr anzeigen",
+    "show_less": "Weniger anzeigen"
+  },
+  "footer": {
+    "copyright": "© {year} Lingo.dev. Alle Rechte vorbehalten.",
+    "terms": "Nutzungsbedingungen",
+    "privacy": "Datenschutzrichtlinie",
+    "cookies": "Cookie-Richtlinie",
+    "contact": "Kontakt",
+    "social": {
+      "follow_us": "Folgen Sie uns",
+      "twitter": "Twitter",
+      "facebook": "Facebook",
+      "linkedin": "LinkedIn",
+      "github": "GitHub"
+    }
   }
 }

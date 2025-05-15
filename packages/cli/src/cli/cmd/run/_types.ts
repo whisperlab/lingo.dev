@@ -15,6 +15,11 @@ export type CmdRunContext = {
   results: Map<CmdRunTask, { success: boolean; error?: Error }>;
 };
 
+export type CmdRunTaskResult = {
+  success: boolean;
+  error?: Error;
+};
+
 export type CmdRunTask = {
   sourceLocale: string;
   targetLocale: string;
