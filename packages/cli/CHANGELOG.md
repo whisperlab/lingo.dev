@@ -1,5 +1,15 @@
 # lingo.dev
 
+## 0.92.9
+
+### Patch Changes
+
+- wip
+
+- Updated dependencies []:
+  - @whisperlab/lingo.dev_sdk@0.7.42
+  - @whisperlab/lingo.dev_spec@0.33.2
+
 ## 0.92.8
 
 ### Patch Changes

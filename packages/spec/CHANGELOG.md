@@ -1,5 +1,11 @@
 # @lingo.dev/\_spec
 
+## 0.33.2
+
+### Patch Changes
+
+- wip
+
 ## 0.33.1
 
 ### Patch Changes
