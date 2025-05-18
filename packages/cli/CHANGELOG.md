@@ -1,5 +1,11 @@
 # lingo.dev
 
+## 0.92.14
+
+### Patch Changes
+
+- fix
+
 ## 0.92.13
 
 ### Patch Changes
