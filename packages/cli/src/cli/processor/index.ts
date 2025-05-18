@@ -1,4 +1,4 @@
-import { I18nConfig } from "@lingo.dev/_spec";
+import { I18nConfig } from "@whisperlab/lingo.dev_spec";
 import { LocalizerFn } from "./_base";
 import { createLingoLocalizer } from "./lingo";
 import { createBasicTranslator } from "./basic";

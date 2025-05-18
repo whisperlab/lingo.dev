@@ -1,5 +1,5 @@
 {
-  "name": "lingo.dev",
+  "name": "@whisperlab/lingo.dev",
   "version": "0.92.8",
   "description": "Lingo.dev CLI",
   "private": false,
@@ -66,8 +66,8 @@
     "@datocms/cma-client-node": "^4.0.1",
     "@gitbeaker/rest": "^39.34.3",
     "@inquirer/prompts": "^7.4.1",
-    "@lingo.dev/_sdk": "workspace:*",
-    "@lingo.dev/_spec": "workspace:*",
+    "@whisperlab/lingo.dev_sdk": "workspace:*",
+    "@whisperlab/lingo.dev_spec": "workspace:*",
     "@modelcontextprotocol/sdk": "^1.5.0",
     "@paralleldrive/cuid2": "^2.2.2",
     "ai": "^4.3.2",

@@ -1,5 +1,5 @@
 {
-  "name": "@lingo.dev/_sdk",
+  "name": "@whisperlab/lingo.dev_sdk",
   "version": "0.7.41",
   "description": "Lingo.dev JS SDK",
   "private": false,
@@ -23,7 +23,7 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "@lingo.dev/_spec": "workspace:*",
+    "@whisperlab/lingo.dev_spec": "workspace:*",
     "@paralleldrive/cuid2": "^2.2.2",
     "jsdom": "^25.0.1",
     "zod": "^3.24.1"

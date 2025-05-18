@@ -1,5 +1,5 @@
 import Z from "zod";
-import { LocaleCode, localeCodeSchema } from "@lingo.dev/_spec";
+import { LocaleCode, localeCodeSchema } from "@whisperlab/lingo.dev_spec";
 import { createId } from "@paralleldrive/cuid2";
 
 const engineParamsSchema = Z.object({

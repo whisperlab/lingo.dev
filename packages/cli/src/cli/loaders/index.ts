@@ -1,6 +1,6 @@
 import Z from "zod";
 import jsdom from "jsdom";
-import { bucketTypeSchema } from "@lingo.dev/_spec";
+import { bucketTypeSchema } from "@whisperlab/lingo.dev_spec";
 import { composeLoaders } from "./_utils";
 import createJsonLoader from "./json";
 import createFlatLoader from "./flat";

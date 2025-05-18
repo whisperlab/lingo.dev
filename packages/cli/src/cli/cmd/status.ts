@@ -1,4 +1,4 @@
-import { bucketTypeSchema, I18nConfig, localeCodeSchema, resolveOverriddenLocale } from "@lingo.dev/_spec";
+import { bucketTypeSchema, I18nConfig, localeCodeSchema, resolveOverriddenLocale } from "@whisperlab/lingo.dev_spec";
 import { Command } from "interactive-commander";
 import Z from "zod";
 import _ from "lodash";

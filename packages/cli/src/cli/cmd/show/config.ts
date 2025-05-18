@@ -2,7 +2,7 @@ import { Command } from "interactive-commander";
 import _ from "lodash";
 import fs from "fs";
 import path from "path";
-import { defaultConfig } from "@lingo.dev/_spec";
+import { defaultConfig } from "@whisperlab/lingo.dev_spec";
 
 export default new Command()
   .command("config")

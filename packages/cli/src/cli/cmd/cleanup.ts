@@ -1,4 +1,4 @@
-import { I18nConfig, resolveOverriddenLocale } from "@lingo.dev/_spec";
+import { I18nConfig, resolveOverriddenLocale } from "@whisperlab/lingo.dev_spec";
 import { Command } from "interactive-commander";
 import _ from "lodash";
 import { getConfig } from "../utils/config";

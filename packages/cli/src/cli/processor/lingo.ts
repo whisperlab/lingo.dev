@@ -1,4 +1,4 @@
-import { LingoDotDevEngine } from "@lingo.dev/_sdk";
+import { LingoDotDevEngine } from "@whisperlab/lingo.dev_sdk";
 import { LocalizerInput, LocalizerProgressFn } from "./_base";
 
 export function createLingoLocalizer(params: { apiKey: string; apiUrl: string }) {

@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { glob } from "glob";
 import _ from "lodash";
-import { LocaleCode, resolveLocaleCode } from "@lingo.dev/_spec";
+import { LocaleCode, resolveLocaleCode } from "@whisperlab/lingo.dev_spec";
 
 export function ensurePatterns(patterns: string[], source: string) {
   if (patterns.length === 0) {

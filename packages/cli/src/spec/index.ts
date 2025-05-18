@@ -1,3 +1,3 @@
 // Re-export everything but with type checking
-export type * from "@lingo.dev/_spec";
-export * from "@lingo.dev/_spec";
+export type * from "@whisperlab/lingo.dev_spec";
+export * from "@whisperlab/lingo.dev_spec";

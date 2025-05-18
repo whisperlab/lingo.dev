@@ -2,7 +2,7 @@ import { ILoader } from "../_types";
 import { createLoader } from "../_utils";
 import { md5 } from "../../utils/md5";
 import _ from "lodash";
-import { I18nConfig } from "@lingo.dev/_spec";
+import { I18nConfig } from "@whisperlab/lingo.dev_spec";
 
 /**
  * Extracts content matching regex patterns and replaces it with placeholders.

@@ -1,7 +1,7 @@
 import { InteractiveCommand, InteractiveOption } from "interactive-commander";
 import Ora from "ora";
 import { getConfig, saveConfig } from "../utils/config";
-import { defaultConfig, LocaleCode, resolveLocaleCode, bucketTypes } from "@lingo.dev/_spec";
+import { defaultConfig, LocaleCode, resolveLocaleCode, bucketTypes } from "@whisperlab/lingo.dev_spec";
 import fs from "fs";
 import path from "path";
 import _ from "lodash";

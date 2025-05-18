@@ -4,7 +4,7 @@ import Ora from "ora";
 import { getConfig } from "../../utils/config";
 import { CLIError } from "../../utils/errors";
 import { getBuckets } from "../../utils/buckets";
-import { resolveOverriddenLocale } from "@lingo.dev/_spec";
+import { resolveOverriddenLocale } from "@whisperlab/lingo.dev_spec";
 
 export default new Command()
   .command("files")

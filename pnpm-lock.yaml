@@ -109,10 +109,10 @@ importers:
       '@inquirer/prompts':
         specifier: ^7.4.1
         version: 7.4.1(@types/node@22.10.2)
-      '@lingo.dev/_sdk':
+      '@whisperlab/lingo.dev_sdk':
         specifier: workspace:*
         version: link:../sdk
-      '@lingo.dev/_spec':
+      '@whisperlab/lingo.dev_spec':
         specifier: workspace:*
         version: link:../spec
       '@modelcontextprotocol/sdk':
@@ -365,7 +365,7 @@ importers:
 
   packages/sdk:
     dependencies:
-      '@lingo.dev/_spec':
+      '@whisperlab/lingo.dev_spec':
         specifier: workspace:*
         version: link:../spec
       '@paralleldrive/cuid2':

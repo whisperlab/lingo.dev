@@ -2,7 +2,7 @@ import { Command } from "interactive-commander";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import Z from "zod";
-import { ReplexicaEngine } from "@lingo.dev/_sdk";
+import { ReplexicaEngine } from "@whisperlab/lingo.dev_sdk";
 import { getSettings } from "../utils/settings";
 import { createAuthenticator } from "../utils/auth";
 
