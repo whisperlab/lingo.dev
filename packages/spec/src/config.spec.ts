@@ -50,7 +50,7 @@ const createV1_3Config = () => ({
 const createV1_4Config = () => ({
   ...createV1_3Config(),
   version: 1.4,
-  $schema: "https://lingo.dev/schema/i18n.json",
+  $schema: "./node_modules/@whisperlab/lingo.dev_spec/build/i18n.schema.json",
 });
 
 const createInvalidLocaleConfig = () => ({

@@ -168,7 +168,7 @@ export class PullRequestFlow extends InBranchFlow {
       this.ora.start("Restoring target files");
       const targetFiles = ["i18n.lock"];
       const targetFileNames = execSync(
-        `npx lingo.dev@latest show files --target ${this.platformKit.platformConfig.baseBranchName}`,
+        `npx @whisperlab/lingo.dev@latest show files --target ${this.platformKit.platformConfig.baseBranchName}`,
         { encoding: "utf8" },
       )
         .split("\n")
@@ -208,13 +208,13 @@ export class PullRequestFlow extends InBranchFlow {
     return `
 Hey team,
 
-[**Lingo.dev**](https://lingo.dev) here with fresh translations!
+**Lingo.dev** here with fresh translations!
 
 ### In this update
 
 - Added missing translations
 - Performed brand voice, context and glossary checks
-- Enhanced translations using Lingo.dev Localization Engine
+- Enhanced translations using AI Localization Engine
 
 ### Next Steps
 

@@ -9,5 +9,5 @@
       "include": ["demo/typescript/[locale].ts"]
     }
   },
-  "$schema": "https://lingo.dev/schema/i18n.json"
+  "$schema": "./node_modules/@whisperlab/lingo.dev_spec/build/i18n.schema.json"
 }

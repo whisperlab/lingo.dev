@@ -227,7 +227,7 @@ export const configV1_3Definition = extendConfigDefinition(
   },
 );
 
-const configSchema = "https://lingo.dev/schema/i18n.json";
+const configSchema = "./node_modules/@whisperlab/lingo.dev_spec/build/i18n.schema.json";
 
 // v1.3 -> v1.4
 // Changes: Add $schema to the config

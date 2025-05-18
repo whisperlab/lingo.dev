@@ -11,7 +11,7 @@ runs:
   steps:
     - name: Run
       run: |
-        npx lingo.dev@latest ci \
+        npx @whisperlab/lingo.dev@latest ci \
           --api-key "${{ inputs.api-key }}" \
           --pull-request "${{ inputs.pull-request }}" \
           --commit-message "${{ inputs.commit-message }}" \

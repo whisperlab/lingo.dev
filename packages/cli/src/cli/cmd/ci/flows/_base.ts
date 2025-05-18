@@ -20,7 +20,7 @@ export abstract class IntegrationFlow implements IIntegrationFlow {
 
 export const gitConfig = {
   userName: "Lingo.dev",
-  userEmail: "support@lingo.dev",
+  userEmail: "support@example.com",
 };
 
 export function escapeShellArg(arg: string): string {

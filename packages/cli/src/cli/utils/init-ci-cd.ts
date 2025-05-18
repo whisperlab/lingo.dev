@@ -101,7 +101,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: lingodotdev/lingo.dev@main
+      - uses: @whisperlab/lingo.dev@main
         with:
           api-key: \${{ secrets.LINGODOTDEV_API_KEY }}
 `,
@@ -122,7 +122,7 @@ function makeBitbucketInitializer(spinner: Ora) {
       - step:
           name: Run i18n
           script:
-            - pipe: lingodotdev/lingo.dev:main`,
+            - pipe: @whisperlab/lingo.dev:main`,
     },
     spinner,
   );

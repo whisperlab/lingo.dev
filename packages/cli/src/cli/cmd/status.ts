@@ -487,7 +487,7 @@ export default new Command()
       // Other tips
       if (targetLocales.length > 1) {
         console.log(`• Translating one language at a time reduces complexity`);
-        console.log(`• Try 'lingo.dev@latest i18n --locale ${targetLocales[0]}' to process just one language`);
+        console.log(`• Try '@whisperlab/lingo.dev@latest i18n --locale ${targetLocales[0]}' to process just one language`);
       }
 
       // Track successful completion

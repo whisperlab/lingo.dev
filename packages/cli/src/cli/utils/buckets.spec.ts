@@ -10,7 +10,7 @@ vi.mock("glob", () => ({
 
 describe("getBuckets", () => {
   const makeI18nConfig = (include: any[]) => ({
-    $schema: "https://lingo.dev/schema/i18n.json",
+    $schema: "./node_modules/@whisperlab/lingo.dev_spec/build/i18n.schema.json",
     version: 0,
     locale: {
       source: "en",

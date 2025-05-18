@@ -81,9 +81,4 @@ async function renderHero() {
   console.log(
     `⚡️ ${chalk.hex(colors.green)("Lingo.dev")} - open-source, AI-powered i18n CLI for web & mobile localization.`,
   );
-  console.log(" ");
-  console.log(
-    chalk.hex(colors.blue)("⭐ GitHub Repo: https://lingo.dev/go/gh"),
-  );
-  console.log(chalk.hex(colors.blue)("💬 24/7 Support: hi@lingo.dev"));
 }

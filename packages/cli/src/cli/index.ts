@@ -34,8 +34,6 @@ ${vice(
 )}
 
 ⚡️ AI-powered open-source CLI for web & mobile localization.
-
-Star the the repo :) https://github.com/LingoDotDev/lingo.dev
 `,
   )
   .version(`v${packageJson.version}`, "-v, --version", "Show version")
