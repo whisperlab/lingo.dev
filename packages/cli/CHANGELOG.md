@@ -1,5 +1,11 @@
 # lingo.dev
 
+## 0.92.13
+
+### Patch Changes
+
+- ai-sdk and responses
+
 ## 0.92.12
 
 ### Patch Changes
