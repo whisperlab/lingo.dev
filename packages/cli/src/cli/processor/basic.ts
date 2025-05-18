@@ -45,7 +45,7 @@ export function createBasicTranslator(model: LanguageModelV1, systemPrompt: stri
           role: "user",
           content: JSON.stringify({
             sourceLocale: "en",
-            targetLocale: "es",
+            targetLocale: input.targetLocale,
             data: input.processableData,
           }),
         },
