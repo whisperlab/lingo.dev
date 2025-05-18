@@ -35,6 +35,7 @@ export class GitHubPlatformKit extends PlatformKit {
       })
       .then(({ data }) => data[0])
       .then((pr) => pr?.number);
+      .catch((r) => (r.status === 404 ? undefined : Promise.reject(r)));
   }
 
   async closePullRequest({ pullRequestNumber }: { pullRequestNumber: number }) {
