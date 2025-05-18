@@ -28,7 +28,7 @@ function getPureModelProvider(provider: I18nConfig["provider"]) {
       return createOpenAI({
         apiKey: process.env.OPENAI_API_KEY,
         baseURL: provider.baseUrl,
-      })(provider.model);
+      }).responses(provider.model);
     case "anthropic":
       if (!process.env.ANTHROPIC_API_KEY) {
         throw new Error("ANTHROPIC_API_KEY is not set.");
