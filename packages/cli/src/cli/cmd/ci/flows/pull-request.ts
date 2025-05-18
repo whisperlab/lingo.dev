@@ -168,7 +168,7 @@ export class PullRequestFlow extends InBranchFlow {
       this.ora.start("Restoring target files");
       const targetFiles = ["i18n.lock"];
       const targetFileNames = execSync(
-        `npx @whisperlab/lingo.dev@latest show files --target ${this.platformKit.platformConfig.baseBranchName}`,
+        `yarn lingo.dev show files --target ${this.platformKit.platformConfig.baseBranchName}`,
         { encoding: "utf8" },
       )
         .split("\n")

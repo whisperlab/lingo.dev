@@ -33,20 +33,22 @@ export default new Command()
   .action(async (options: CIOptions) => {
     const settings = getSettings(options.apiKey);
 
-    if (!settings.auth.apiKey) {
-      console.error("No API key provided");
-      return;
-    }
+    //if (!settings.auth.apiKey) {
+    //  console.error("No API key provided");
+    //  return;
+    //}
 
-    const authenticator = createAuthenticator({
-      apiUrl: settings.auth.apiUrl,
-      apiKey: settings.auth.apiKey,
-    });
-    const auth = await authenticator.whoami();
+    if (settings.auth.apiKey) {
+      const authenticator = createAuthenticator({
+        apiUrl: settings.auth.apiUrl,
+        apiKey: settings.auth.apiKey,
+      });
+      const auth = await authenticator.whoami();
 
-    if (!auth) {
-      console.error("Not authenticated");
-      return;
+      if (!auth) {
+        console.error("Not authenticated");
+        return;
+      }
     }
 
     const env = {

@@ -134,8 +134,8 @@ function makeGitlabInitializer(spinner: Ora) {
       name: "Gitlab CI",
       checkPath: ".gitlab-ci.yml",
       ciConfigPath: ".gitlab-ci.yml",
-      ciConfigContent: `lingodotdev:
-  image: lingodotdev/ci-action:latest
+      ciConfigContent: `whisperlab_lingo.dev:
+  image: whisperlab/lingo.dev_ci-action:latest
   script:
     - echo "Done"
 `,

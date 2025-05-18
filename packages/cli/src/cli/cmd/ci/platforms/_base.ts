@@ -1,7 +1,7 @@
 import { execSync } from "child_process";
 import Z from "zod";
 
-const defaultMessage = "feat: update translations via @lingodotdev";
+const defaultMessage = "feat: update translations";
 
 interface BasePlatformConfig {
   baseBranchName: string;
