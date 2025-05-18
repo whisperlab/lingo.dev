@@ -1,5 +1,11 @@
 # lingo.dev
 
+## 0.92.12
+
+### Patch Changes
+
+- github
+
 ## 0.92.11
 
 ### Patch Changes
