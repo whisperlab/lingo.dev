@@ -34,7 +34,7 @@ export class GitHubPlatformKit extends PlatformKit {
         state: "open",
       })
       .then(({ data }) => data[0])
-      .then((pr) => pr?.number);
+      .then((pr) => pr?.number)
       .catch((r) => (r.status === 404 ? undefined : Promise.reject(r)));
   }
 
