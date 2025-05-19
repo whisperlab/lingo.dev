@@ -1,4 +1,5 @@
-import { generateText, LanguageModelV1 } from "ai";
+import { LanguageModelV1 } from "ai";
+import { BasicEngine } from "@whisperlab/lingo.dev_sdk";
 import { LocalizerInput, LocalizerProgressFn } from "./_base";
 
 export function createBasicTranslator(model: LanguageModelV1, systemPrompt: string) {
@@ -7,53 +8,28 @@ export function createBasicTranslator(model: LanguageModelV1, systemPrompt: stri
       return input.processableData;
     }
 
-    if (!process.env.OPENAI_API_KEY) {
-      throw new Error("OPENAI_API_KEY is not set");
+    if (!process.env.OPENAI_API_KEY && !process.env.ANTHROPIC_API_KEY) {
+      throw new Error("OPENAI_API_KEY or ANTHROPIC_API_KEY is not set");
     }
 
-    const response = await generateText({
+    const basic = new BasicEngine({
       model,
-      messages: [
-        {
-          role: "system",
-          content: JSON.stringify({
-            role: "system",
-            content: systemPrompt.replaceAll("{source}", input.sourceLocale).replaceAll("{target}", input.targetLocale),
-          }),
-        },
-        {
-          role: "user",
-          content: JSON.stringify({
-            sourceLocale: "en",
-            targetLocale: "es",
-            data: {
-              message: "Hello, world!",
-            },
-          }),
-        },
-        {
-          role: "assistant",
-          content: JSON.stringify({
-            sourceLocale: "en",
-            targetLocale: "es",
-            data: {
-              message: "Hola, mundo!",
-            },
-          }),
-        },
-        {
-          role: "user",
-          content: JSON.stringify({
-            sourceLocale: "en",
-            targetLocale: input.targetLocale,
-            data: input.processableData,
-          }),
-        },
-      ],
+      systemPrompt,
     });
 
-    const result = JSON.parse(response.text);
+    const result = await basic.localizeObject(
+      input.processableData,
+      {
+        sourceLocale: input.sourceLocale,
+        targetLocale: input.targetLocale,
+        reference: {
+          [input.sourceLocale]: input.sourceData,
+          [input.targetLocale]: input.targetData,
+        },
+      },
+      onProgress,
+    );
 
-    return result?.data || {};
+    return result;
   };
 }

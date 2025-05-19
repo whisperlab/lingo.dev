@@ -359,6 +359,9 @@ importers:
       '@whisperlab/lingo.dev_spec':
         specifier: workspace:*
         version: link:../spec
+      ai:
+        specifier: ^4.3.2
+        version: 4.3.2(react@19.1.0)(zod@3.24.1)
       jsdom:
         specifier: ^25.0.1
         version: 25.0.1
